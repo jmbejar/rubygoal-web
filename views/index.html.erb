@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+    <script>
+      function rotateAndPaintImage(context, image, angle, x, y) {
+        var width = 60;
+        var height = 60;
+
+        context.translate(x, y);
+        context.rotate(angle * Math.PI/180);
+        context.drawImage(image, -width / 2, -height / 2, width, height);
+        context.rotate(-angle * Math.PI/180);
+        context.translate(-x, -y);
+      }
+
+      $(document).ready(function(){
+        function debug(str){ $("#debug").append("<p>"+str+"</p>"); };
+
+        ws = new WebSocket("ws://" + window.document.location.host + "/");
+        ws.onmessage = function(evt) {
+          $("#msg").html("<p>"+evt.data+"</p>");
+          data = JSON.parse(evt.data);
+          context.drawImage(backgroundObj, 0, 0);
+          context.drawImage(ballObj, data.ball.x, data.ball.y);
+          for(var i = 0; i < 11; i += 1) {
+            rotateAndPaintImage(context, homeObj, data.home[i].angle, data.home[i].x, data.home[i].y);
+            rotateAndPaintImage(context, awayObj, data.away[i].angle, data.away[i].x, data.away[i].y);
+          }
+        };
+        ws.onclose = function() { debug("socket closed"); };
+        ws.onopen = function() {
+          debug("connected...");
+          ws.send("hello server");
+        };
+
+        var canvas = document.getElementById('myCanvas');
+        var context = canvas.getContext('2d');
+        
+        var backgroundObj = new Image();
+        backgroundObj.src = 'assets/background.png';
+
+        var ballObj = new Image();
+        ballObj.src = 'assets/ball.png';
+        
+        var homeObj = new Image();
+        homeObj.src = 'assets/average_home.png';
+        
+        var awayObj = new Image();
+        awayObj.src = 'assets/average_away.png';
+      });
+    </script>
+  </head>
+  <body>
+    <canvas id="myCanvas" height="1080" width="1920"></canvas>
+    <div id="debug"></div>
+    <div id="msg"></div>
+  </body>
+</html>
