@@ -1,14 +1,10 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    em-websocket (0.5.1)
-      eventmachine (>= 0.12.9)
-      http_parser.rb (~> 0.6.0)
     eventmachine (1.0.3)
     faye-websocket (0.7.5)
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.3.5)
-    http_parser.rb (0.6.0)
     puma (2.6.0)
       rack (>= 1.1, < 2.0)
     rack (1.5.2)
@@ -25,7 +21,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  em-websocket
   faye-websocket
   puma
   sinatra

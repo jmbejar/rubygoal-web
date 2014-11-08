@@ -1,5 +1,4 @@
 require 'faye/websocket'
-require 'em-websocket'
 require 'json'
 
 module RubyGoal
