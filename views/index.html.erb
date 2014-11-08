@@ -33,6 +33,11 @@
           ws.send("hello server");
         };
 
+        window.onbeforeunload = function() {
+          ws.onclose = function () {}; // disable onclose handler first
+          ws.close()
+        };
+
         var canvas = document.getElementById('myCanvas');
         var context = canvas.getContext('2d');
         
