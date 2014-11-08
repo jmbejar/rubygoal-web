@@ -19,7 +19,6 @@
 
         ws = new WebSocket("ws://" + window.document.location.host + "/");
         ws.onmessage = function(evt) {
-          $("#msg").html("<p>"+evt.data+"</p>");
           data = JSON.parse(evt.data);
           context.drawImage(backgroundObj, 0, 0);
           context.drawImage(ballObj, data.ball.x, data.ball.y);

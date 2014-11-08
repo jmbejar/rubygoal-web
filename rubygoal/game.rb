@@ -27,7 +27,7 @@ module Rubygoal
     end
 
     def update
-      return if state == :ended
+      return if ended?
 
       update_elapsed_time
 
@@ -52,6 +52,10 @@ module Rubygoal
       if id == Gosu::KbEscape
         close
       end
+    end
+
+    def ended?
+      state == :ended
     end
 
     protected
