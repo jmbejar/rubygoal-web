@@ -1,6 +1,5 @@
 require 'faye/websocket'
 require 'json'
-require 'byebug'
 
 module RubyGoal
   class GameServer
