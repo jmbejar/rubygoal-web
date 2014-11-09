@@ -38,11 +38,14 @@
       }
 
       $(document).ready(function(){
-        function debug(str){ $("#debug").append("<p>"+str+"</p>"); };
+        function debug(str){ $("#debug").html("<p>"+str+"</p>"); };
 
         ws = new WebSocket("ws://" + window.document.location.host + "/");
         ws.onmessage = function(evt) {
           data = JSON.parse(evt.data);
+
+          debug(data.viewers);
+
           context.drawImage(backgroundObj, 0, 0);
           context.drawImage(ballObj, data.ball.x, data.ball.y);
           for(var i = 0; i < 11; i += 1) {
@@ -58,8 +61,12 @@
           ws.send("hello server");
         };
 
+        $(window).unload(function() {
+          ws.onclose = function () {};
+          ws.close()
+        });
         window.onbeforeunload = function() {
-          ws.onclose = function () {}; // disable onclose handler first
+          ws.onclose = function () {};
           ws.close()
         };
 

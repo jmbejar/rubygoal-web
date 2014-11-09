@@ -31,47 +31,70 @@ module RubyGoal
       message
     end
 
+    def ended?
+      @game.nil?
+    end
+
     private
 
     def start_game_loop
-      @timer = EventMachine::PeriodicTimer.new(1.0 / 60) do
-        @game.update
-        finish_game if @game.ended?
+      @thread = Thread.new do
+        EventMachine::PeriodicTimer.new(1.0 / 60) do
+          p "Game update"
+          @game.update
+          finish_game if @game.ended?
+        end
       end
     end
 
     def finish_game
-      @timer.cancel
+      @thread.kill
       @game = nil
     end
   end
 
   class Backend
-    KEEPALIVE_TIME = 15 # in seconds
-
     def initialize(app)
       @app = app
       @game_server = GameServer.new
+      @viewers = Set.new
     end
 
     def call(env)
       if Faye::WebSocket.websocket?(env)
-        ws = Faye::WebSocket.new(env, nil, {ping: KEEPALIVE_TIME })
+        ws = Faye::WebSocket.new(env, nil)
         timer = nil
+        viewer_id = nil
+        last_time_sent = nil
 
         ws.on :open do |event|
-          puts "WebSocket connection open"
+          viewer_id = rand(100000)
+          @viewers.add(viewer_id)
+
+          puts "WebSocket connection open ##{viewer_id}"
 
           @game_server.start_game
 
           timer = EventMachine::PeriodicTimer.new(1.0 / 60) do
-            ws.send @game_server.message.to_json
+            if @game_server.ended?
+              ws.close
+            else
+              p "Send msg ##{viewer_id}"
+              message = @game_server.message
+              if message[:time] != last_time_sent
+                ws.send message.merge({viewers: @viewers.count}).to_json
+                last_time_sent = message[:time]
+              else
+                p "Skip msg ##{viewer_id}"
+              end
+            end
           end
         end
 
         ws.on :close do |event|
           timer.cancel if timer
-          puts "Connection closed"
+          @viewers.delete(viewer_id)
+          puts "Connection closed ##{viewer_id}"
         end
 
         ws.on :message do |event|
