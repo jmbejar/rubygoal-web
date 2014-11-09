@@ -35,7 +35,7 @@ module Rubygoal
         update_goal
       else
         update_remaining_time
-        field.update
+        field.update(elapsed_time)
       end
 
       end_match! if time <= 0
@@ -157,12 +157,6 @@ module Rubygoal
 
     def draw_text(text, position, color, size = 1)
       font.draw_rel(text, position.x, position.y, 0.5, 0.5, 1, size, size, color_to_hex(color))
-    end
-
-    def time_text
-      minutes = Integer(time) / 60
-      seconds = Integer(time) % 60
-      "%d:%02d" % [minutes, seconds]
     end
 
     def color_to_hex(color)

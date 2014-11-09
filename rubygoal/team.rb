@@ -53,7 +53,7 @@ module Rubygoal
       end
     end
 
-    def update(match)
+    def update(match, elapsed_time)
       self.formation = coach.formation(match)
       update_positions(formation)
 
@@ -79,7 +79,7 @@ module Rubygoal
           end
           player.move_to positions[name]
         end
-        player.update
+        player.update(elapsed_time)
       end
     end
 

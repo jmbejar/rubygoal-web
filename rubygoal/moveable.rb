@@ -30,14 +30,16 @@ module Rubygoal
       velocity.y = Util.offset_y(angle, speed)
     end
 
-    def update
+    def update(elapsed_time)
       return unless moving?
 
       if destination && distance(destination) < MIN_DISTANCE
         stop
       else
-        position.x += velocity.x
-        position.y += velocity.y
+        time_factor = elapsed_time / (1.0 / 60.0)
+
+        position.x += velocity.x * time_factor
+        position.y += velocity.y * time_factor
       end
     end
 

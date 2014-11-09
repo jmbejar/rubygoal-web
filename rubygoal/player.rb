@@ -29,8 +29,8 @@ module Rubygoal
       reset_waiting_to_kick!
     end
 
-    def update
-      update_waiting_to_kick!
+    def update(elapsed_time)
+      update_waiting_to_kick!(elapsed_time)
       super
     end
 
@@ -61,9 +61,10 @@ module Rubygoal
       self.time_to_kick_again = Rubygoal.configuration.kick_again_delay
     end
 
-    def update_waiting_to_kick!
-      # TODO Make it time-based rather than counting ticks
-      self.time_to_kick_again -= 1 if waiting_to_kick_again?
+    def update_waiting_to_kick!(elapsed_time)
+      time_factor = elapsed_time / (1.0 / 60.0)
+
+      self.time_to_kick_again -= time_factor if waiting_to_kick_again?
     end
 
     def control_ball?(ball)

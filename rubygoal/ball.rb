@@ -33,11 +33,11 @@ module Rubygoal
       image.draw(image_center_x, image_center_y, 1)
     end
 
-    def update
+    def update(elapsed_time)
       super
 
       prevent_out_of_bounds
-      decelerate
+      decelerate(elapsed_time)
     end
 
     private
@@ -51,9 +51,18 @@ module Rubygoal
       end
     end
 
-    def decelerate
-      velocity.x *= deceleration_coef
-      velocity.y *= deceleration_coef
+    def decelerate(elapsed_time)
+      time_factor = elapsed_time / (1.0 / 60.0)
+
+      coef = deceleration_coef * time_factor
+      if coef > 1
+        coef = 0
+      else
+        coef = 1 - coef
+      end
+
+      velocity.x *= coef
+      velocity.y *= coef
     end
 
     def deceleration_coef

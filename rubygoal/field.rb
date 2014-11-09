@@ -107,10 +107,10 @@ module Rubygoal
       ball.position = Field.center_position
     end
 
-    def update
-      team_home.update(game_data(:home))
-      team_away.update(game_data(:away))
-      ball.update
+    def update(elapsed_time)
+      team_home.update(game_data(:home), elapsed_time)
+      team_away.update(game_data(:away), elapsed_time)
+      ball.update(elapsed_time)
     end
 
     def draw

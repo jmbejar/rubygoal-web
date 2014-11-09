@@ -27,10 +27,10 @@ module Rubygoal
     config.fast_players_count    = 3
     config.captain_players_count = 1
 
-    config.kick_strength         = 20
-    config.kick_again_delay      = 60
+    config.kick_strength         = 20.0
+    config.kick_again_delay      = 60.0
     config.distance_control_ball = 30
-    config.deceleration_coef     = 0.95
+    config.deceleration_coef     = 0.05
 
     config.average_lower_error   = 0.1
     config.average_upper_error   = 0.15
