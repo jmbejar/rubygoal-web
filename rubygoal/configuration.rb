@@ -43,6 +43,6 @@ module Rubygoal
     config.captain_error         = 0.05
     config.captain_speed         = 4.5
 
-    config.game_time             = 12
+    config.game_time             = 120
   end
 end

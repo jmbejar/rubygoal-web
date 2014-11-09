@@ -40,7 +40,6 @@ module RubyGoal
     def start_game_loop
       @thread = Thread.new do
         EventMachine::PeriodicTimer.new(1.0 / 60) do
-          p "Game update"
           @game.update
           finish_game if @game.ended?
         end
@@ -79,13 +78,10 @@ module RubyGoal
             if @game_server.ended?
               ws.close
             else
-              p "Send msg ##{viewer_id}"
               message = @game_server.message
               if message[:time] != last_time_sent
                 ws.send message.merge({viewers: @viewers.count}).to_json
                 last_time_sent = message[:time]
-              else
-                p "Skip msg ##{viewer_id}"
               end
             end
           end
