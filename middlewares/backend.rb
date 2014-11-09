@@ -16,7 +16,10 @@ module RubyGoal
       message = {
         ball: { x: @game.field.ball.position.x - 15, y: @game.field.ball.position.y - 15},
         home: [],
-        away: []
+        away: [],
+        score_home: @game.score_home,
+        score_away: @game.score_away,
+        time: @game.time
       }
       @game.field.team_home.players.values.each do |p|
         message[:home] << { x: p.position.x, y: p.position.y, angle: p.angle }
