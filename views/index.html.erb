@@ -8,7 +8,6 @@
       var buffering = true;
 
       function formatTime(secs) {
-        //var sec_num = parseInt(time, 10);
         var minutes = Math.floor(secs / 60);
         var seconds = Math.floor(secs - (minutes * 60));
 
@@ -93,16 +92,16 @@
         var context = canvas.getContext('2d');
         
         var backgroundObj = new Image();
-        backgroundObj.src = 'assets/background.png';
+        backgroundObj.src = 'assets/images/background.png';
 
         var ballObj = new Image();
-        ballObj.src = 'assets/ball.png';
+        ballObj.src = 'assets/images/ball.png';
         
         var homeObj = new Image();
-        homeObj.src = 'assets/average_home.png';
+        homeObj.src = 'assets/images/average_home.png';
         
         var awayObj = new Image();
-        awayObj.src = 'assets/average_away.png';
+        awayObj.src = 'assets/images/average_away.png';
 
         var timer = setInterval(function(){
           if (ended) {
